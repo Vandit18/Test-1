@@ -2,61 +2,60 @@
 <html>
 
 <head>
-    <title>
-        <%= title %>
-    </title>
+  <title>
+    <%= title %>
+  </title>
 
-    <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
 
-    <!-- Optional theme -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+  <!-- Optional theme -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
 
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
 
-    <!-- Custom CSS -->
-    <link rel='stylesheet' href='/stylesheets/style.css' />
+  <!-- Custom CSS -->
+  <link rel='stylesheet' href='/stylesheets/style.css' />
 </head>
 
 <body>
 
-        <div class="navbar navbar-default navbar-fixed-top" id="bs-example-navbar-collapse-1">
-            <ul class="nav navbar-nav navbar-left">
-                <% if(title == "Home" ) { %>
-                <li class="active">
-                    <% } else { %>
-                <li>
-                    <% } %>
-                    <a href="/">Home</a></li>
-                <li role="presentation"><a href="/tempelates">Templates</a> </li>
-                <li role="presentation"><a href="/surveys">Surveys</a> </li>
-                <li role="separator" class="divider"></li>
-                <% if (displayName) { %>
-                <% if(title == "users" ) { %>
-                <li class="active">
-                    <% } else { %>
-                <li>
-                    <% } %>
-                    <a href="/users">Users</a></li>
-                <li class="navbar-text">Hello,
-                    <%= displayName %>
-                </li>
-                <li><a href="/contacts">About</a> </li>
-                <li><a href="/logout">Logout</a></li>
-                <% } else { %>
-                <% if(title == "Register" ) { %>
-                <li class="active">
-                    <% } else { %>
-                <li>
-                    <% } %>
-                    <a href="/register">Register</a></li>
-                <% if(title == "Login" ) { %>
-                <li class="active">
-                    <% } else { %>
-                <li>
-                    <% } %>
-                    <a href="/login">Login</a></li>
-                <% } %>
-            </ul> <!-- nav navbar-nav navbar-right -->
-        </div> <!-- collapse navbar-collapse -->
+<div class="navbar navbar-default navbar-fixed-top" id="bs-example-navbar-collapse-1">
+  <ul class="nav navbar-nav navbar-left">
+    <% if(title == "Home" ) { %>
+    <li class="active">
+      <% } else { %>
+    <li>
+      <% } %>
+      <a href="/">Home</a></li>
+    <li role="presentation"><a href="/contacts">Surveys</a> </li>
+    <li role="separator" class="divider"></li>
+    <% if (displayName) { %>
+    <% if(title == "users" ) { %>
+    <li class="active">
+      <% } else { %>
+    <li>
+      <% } %>
+      <a href="/users">Users</a></li>
+    <li class="navbar-text">Hello,
+      <%= displayName %>
+    </li>
+    <li><a href="/contacts">Surveys</a> </li>
+    <li><a href="/logout">Logout</a></li>
+    <% } else { %>
+    <% if(title == "Register" ) { %>
+    <li class="active">
+      <% } else { %>
+    <li>
+      <% } %>
+      <a href="/register">Register</a></li>
+    <% if(title == "Login" ) { %>
+    <li class="active">
+      <% } else { %>
+    <li>
+      <% } %>
+      <a href="/login">Login</a></li>
+    <% } %>
+  </ul> <!-- nav navbar-nav navbar-right -->
+</div> <!-- collapse navbar-collapse -->

@@ -7,10 +7,10 @@ var Schema = mongoose.Schema;
 
 // Define our user Schema
 var UserSchema = new Schema({
-	firstName: String,
-	lastName: String,
-	userEmail: String,
-	userPassword: String,
+	email: String,
+	password: String,
+	displayName: String,
+	username: String,
 	salt: String,
 	provider: String,
 	providerId: String,
@@ -23,7 +23,7 @@ var UserSchema = new Schema({
 
 // Generate a Hash
 UserSchema.methods.generateHash = function(password) {
-	return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
+	return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);	
 };
 
 // Check to see if password is valid

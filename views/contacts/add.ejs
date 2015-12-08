@@ -1,0 +1,30 @@
+<% include ../partials/header.ejs %>
+
+<main class="container">
+    <h1 style="padding: 35px;">Add a New Survey</h1>
+    <div class="col-sm-4">
+        <form method="post">
+            <fieldset class="form-group">
+                <label for="surveyTopic">Survey Topic*</label>
+                <input name="surveyTopic" type="text" class="form-control" required autofocus />
+            </fieldset>
+            <fieldset class="form-group">
+                <label for="surveyQuestion">Survey Question*</label>
+                <input name="surveyQuestion" type="text" class="form-control" required />
+            </fieldset>
+            <div class="radioButtons" style="padding:15px;">
+                <label class="radio-inline"><input type="radio" name="optradio"> <input name="surveyOption1" type="text" class="form-control" required /></label><br>
+                <label class="radio-inline"><input type="radio" name="optradio"> <input name="surveyOption2" type="text" class="form-control" required /></label><br>
+                <label class="radio-inline"><input type="radio" name="optradio"> <input name="surveyOption3" type="text" class="form-control" required /></label><br>
+                <label class="radio-inline"><input type="radio" name="optradio"> <input name="surveyOption4" type="text" class="form-control" required /></label>
+            </div>
+
+            <fieldset class="form-group text-right">
+                <input type="submit" class="btn btn-success" value="Submit"/>
+            </fieldset>
+        </form>
+    </div>
+
+</main>
+
+<% include ../partials/footer.ejs %>

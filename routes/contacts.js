@@ -2,51 +2,51 @@ var express = require('express');
 var passport = require('passport');
 var router = express.Router();
 
-var User = require('../models/user');
+var Contact = require('../models/contact');
 
 /* Utility functin to check if user is authenticatd */
 function requireAuth(req, res, next){
 
-  // check if the user is logged in
-  if(!req.isAuthenticated()){
-    return res.redirect('/login');
-  }
-  next();
+    // check if the user is logged in
+    if(!req.isAuthenticated()){
+        return res.redirect('/login');
+    }
+    next();
 }
 
 /* Render Users main page. */
 router.get('/', requireAuth, function (req, res, next) {
-    User.find(function (err, users) {
+    Contact.find(function (err, contacts) {
         if (err) {
             console.log(err);
             res.end(err);
         }
         else {
-            res.render('users/index', {
-                title: 'Users',
-                users: users,
+            res.render('contacts/index', {
+                title: 'Contacts',
+                contacts: contacts,
                 displayName: req.user ? req.user.displayName : ''
             });
         }
     });
 });
 
+
 /* Render the Add Users Page */
-router.get('/add', requireAuth, function (req, res, next) {
-    res.render('users/add', {
+router.get('/live', requireAuth, function (req, res, next) {
+    res.render('contacts/live', {
         title: 'Users',
         displayName: req.user ? req.user.displayName : ''
     });
 });
+/* process the submission of a new survey */
+router.post('/live', requireAuth, function (req, res, next) {
+    var contact = new Contact(req.body);
 
-/* process the submission of a new user */
-router.post('/add', requireAuth, function (req, res, next) {
-    var user = new User(req.body);
-    var hashedPassword = user.generateHash(user.password);
-    User.create({
-        email: req.body.email,
-        password: hashedPassword,
-        displayName: req.body.displayName,
+    Contact.create({
+        surveyTopic: req.body.surveyTopic,
+        surveyQuestion: req.body.surveyQuestion,
+        businessName: req.body.businessName,
         provider: 'local',
         created: Date.now(),
         updated: Date.now()
@@ -56,7 +56,37 @@ router.post('/add', requireAuth, function (req, res, next) {
             res.end(err);
         }
         else {
-            res.redirect('/users');
+            res.redirect('/contacts');
+        }
+    });
+});
+
+/* Render the Add Users Page */
+router.get('/add', requireAuth, function (req, res, next) {
+    res.render('contacts/add', {
+        title: 'Contacts',
+        displayName: req.user ? req.user.displayName : ''
+    });
+});
+
+/* process the submission of a new user */
+router.post('/add', requireAuth, function (req, res, next) {
+    var contact = new Contact(req.body);
+
+    Contact.create({
+        surveyTopic: req.body.surveyTopic,
+        surveyQuestion: req.body.surveyQuestion,
+        businessName: req.body.businessName,
+        provider: 'local',
+        created: Date.now(),
+        updated: Date.now()
+    }, function (err, User) {
+        if (err) {
+            console.log(err);
+            res.end(err);
+        }
+        else {
+            res.redirect('/contacts');
         }
     });
 });
@@ -66,16 +96,16 @@ router.get('/:id', requireAuth, function (req, res, next) {
     // create an id variable
     var id = req.params.id;
     // use mongoose and our model to find the right user
-    User.findById(id, function (err, user) {
+    Contact.findById(id, function (err, contact) {
         if (err) {
             console.log(err);
             res.end(err);
         }
         else {
             //show the edit view
-            res.render('users/edit', {
-                title: 'Users',
-                user: user,
+            res.render('contacts/edit', {
+                title: 'Contacts',
+                contact: contact,
                 displayName: req.user ? req.user.displayName : ''
             });
         }
@@ -85,19 +115,19 @@ router.get('/:id', requireAuth, function (req, res, next) {
 /* process the edit form submission */
 router.post('/:id', requireAuth, function (req, res, next) {
     var id = req.params.id;
-    var user = new User(req.body);
-    user.password = user.generateHash(user.password);
-    user._id = id;
-    user.updated = Date.now();
-    
+    var contact = new Contact(req.body);
+
+    contact._id = id;
+    contact.updated = Date.now();
+
     // use mongoose to do the update
-    User.update({ _id: id }, user, function (err) {
+    Contact.update({ _id: id }, contact, function (err) {
         if (err) {
             console.log(err);
             res.end(err);
         }
         else {
-            res.redirect('/users');
+            res.redirect('/contacts');
         }
     });
 });
@@ -105,15 +135,16 @@ router.post('/:id', requireAuth, function (req, res, next) {
 /* run delete on the selected user */
 router.get('/delete/:id', requireAuth, function (req, res, next) {
     var id = req.params.id;
-    User.remove({ _id: id }, function (err) {
+    Contact.remove({ _id: id }, function (err) {
         if (err) {
             console.log(err);
             res.end(err);
         }
         else {
-            res.redirect('/users');
+            res.redirect('/contacts');
         }
     });
 });
+
 
 module.exports = router;

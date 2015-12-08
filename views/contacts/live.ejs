@@ -4,25 +4,26 @@
     <h1>Contacts</h1>
     <div class="panel panel-default">
         <div class="panel-heading">
-            <a href="/contacts/add" title="Add User"><i class="fa fa-plus-circle"></i> Add a new Survey</a>
+
         </div> <!-- panel-heading -->
         <% if (contacts.length > 0) { %>
         <div class="panel-body table-responsive">
             <table class="table table-bordered table-striped table-hover">
-                <thead>
-                <tr>
-                    <th>Survey</th>
 
-
-                    <th></th>
-                </tr>
-                </thead>
                 </tbody>
                 <% for (var i = 0; i < contacts.length; i++) { %>
                 <tr>
                     <td>
-                        <a href="contacts/live"><%= contacts[i].surveyTopic %></a>
+                        <h3><%= contacts[i].surveyQuestion %><span class="label label-default"></span></h3>
+                        <ul class="list-group">
+
+                            <li class="list-group-item"><input type="radio" name="optradio"></label><%= contacts[i].surveyOption1 %></li>
+                            <li class="list-group-item"><input type="radio" name="optradio"></label><%= contacts[i].surveyOption2 %></li>
+                            <li class="list-group-item"><input type="radio" name="optradio"></label><%= contacts[i].surveyOption3 %></li>
+                            <li class="list-group-item"><input type="radio" name="optradio"></label><%= contacts[i].surveyOption4 %></li>
+                        </ul>
                     </td>
+
 
 
                     <td>

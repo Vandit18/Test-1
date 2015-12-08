@@ -23,7 +23,7 @@ router.get('/', requireAuth, function (req, res, next) {
         }
         else {
             res.render('contacts/index', {
-                title: 'Contacts',
+                title: 'Users',
                 contacts: contacts,
                 displayName: req.user ? req.user.displayName : ''
             });
@@ -31,32 +31,19 @@ router.get('/', requireAuth, function (req, res, next) {
     });
 });
 
-
-/* Render the Add Users Page */
+/* Render Users main page. */
 router.get('/live', requireAuth, function (req, res, next) {
-    res.render('contacts/live', {
-        title: 'Users',
-        displayName: req.user ? req.user.displayName : ''
-    });
-});
-/* process the submission of a new survey */
-router.post('/live', requireAuth, function (req, res, next) {
-    var contact = new Contact(req.body);
-
-    Contact.create({
-        surveyTopic: req.body.surveyTopic,
-        surveyQuestion: req.body.surveyQuestion,
-        businessName: req.body.businessName,
-        provider: 'local',
-        created: Date.now(),
-        updated: Date.now()
-    }, function (err, User) {
+    Contact.find(function (err, contacts) {
         if (err) {
             console.log(err);
             res.end(err);
         }
         else {
-            res.redirect('/contacts');
+            res.render('contacts/live', {
+                title: 'Surveys',
+                contacts: contacts,
+                displayName: req.user ? req.user.displayName : ''
+            });
         }
     });
 });
@@ -76,7 +63,10 @@ router.post('/add', requireAuth, function (req, res, next) {
     Contact.create({
         surveyTopic: req.body.surveyTopic,
         surveyQuestion: req.body.surveyQuestion,
-        businessName: req.body.businessName,
+        surveyOption1: req.body.surveyOption1,
+        surveyOption2: req.body.surveyOption2,
+        surveyOption3: req.body.surveyOption3,
+        surveyOption4: req.body.surveyOption4,
         provider: 'local',
         created: Date.now(),
         updated: Date.now()

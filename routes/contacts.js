@@ -32,7 +32,7 @@ router.get('/', requireAuth, function (req, res, next) {
 });
 
 /* Render Users main page. */
-router.get('/live', requireAuth, function (req, res, next) {
+router.get('/live/:id', requireAuth, function (req, res, next) {
     Contact.find(function (err, contacts) {
         if (err) {
             console.log(err);

@@ -21,10 +21,12 @@
                             <li class="list-group-item"><input type="radio" name="optradio"></label><%= contacts[i].surveyOption2 %></li>
                             <li class="list-group-item"><input type="radio" name="optradio"></label><%= contacts[i].surveyOption3 %></li>
                             <li class="list-group-item"><input type="radio" name="optradio"></label><%= contacts[i].surveyOption4 %></li>
+                            <fieldset class="form-group text-right">
+                                <input type="submit" class="btn btn-success" value="Submit"/>
+                            </fieldset>
                         </ul>
+
                     </td>
-
-
 
                     <td>
                         <a href="/contacts/<%= contacts[i]._id %>" title="Edit" class="btn btn-primary">

@@ -1,0 +1,48 @@
+<% include ../partials/header.ejs %>
+
+<main class="container">
+    <h1 style="padding: 35px;">Contacts</h1>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+
+        </div> <!-- panel-heading -->
+        <% if (contacts.length > 0) { %>
+        <div class="panel-body table-responsive">
+            <table class="table table-bordered table-striped table-hover">
+
+                </tbody>
+                <% for (var i = 0; i < contacts.length; i++) { %>
+                <tr>
+                    <td>
+                        <h3><%= contacts[i].surveyQuestion %><span class="label label-default"></span></h3>
+                        <ul class="list-group">
+
+                            <li class="list-group-item"><input type="radio" name="optradio"></label><%= contacts[i].surveyOption1 %></li>
+                            <li class="list-group-item"><input type="radio" name="optradio"></label><%= contacts[i].surveyOption2 %></li>
+                            <li class="list-group-item"><input type="radio" name="optradio"></label><%= contacts[i].surveyOption3 %></li>
+                            <li class="list-group-item"><input type="radio" name="optradio"></label><%= contacts[i].surveyOption4 %></li>
+                            <fieldset class="form-group text-right">
+                                <input type="submit" class="btn btn-success" value="Submit"/>
+                            </fieldset>
+                        </ul>
+
+                    </td>
+
+                    <td>
+                        <a href="/contacts/<%= contacts[i]._id %>" title="Edit" class="btn btn-primary">
+                            <i class="fa fa-pencil-square-o"></i>
+                        </a>
+                        <a href="/contacts/delete/<%= contacts[i]._id %>" title="Delete" onclick="return confirm('Are you sure you want to delete this?');" class="btn btn-danger">
+                            <i class="fa fa-trash-o"></i>
+                        </a>
+                    </td>
+                </tr>
+                <% } %>
+                </tbody>
+            </table>
+        </div> <!-- panel-body -->
+        <% } %>
+    </div><!-- panel panel-default -->
+
+</main>
+<% include ../partials/footer.ejs %>

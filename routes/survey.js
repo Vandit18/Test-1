@@ -2,96 +2,139 @@ var express = require('express');
 var passport = require('passport');
 var router = express.Router();
 
-var User = require('../models/user');
+var Survey = require('../models/survey');
 
-/* Render home page. */
-router.get('/', function (req, res, next) {
-    res.render('index', {
-        title: 'Home',
-        displayName: req.user ? req.user.displayName : ''
-    });
-});
+/* Utility functin to check if user is authenticatd */
+function requireAuth(req, res, next){
 
-/* Render home page. */
-router.get('/about', function (req, res, next) {
-    res.render('about', {
-        title: 'About',
-        displayName: req.user ? req.user.displayName : ''
-    });
-});
-
-/* Render home page. */
-router.get('/', function (req, res, next) {
-    res.render('index', {
-        title: 'Home',
-        displayName: req.user ? req.user.displayName : ''
-    });
-});
-
-/* Render home page. */
-router.get('/projects', function (req, res, next) {
-    res.render('projects', {
-        title: 'Projects',
-        displayName: req.user ? req.user.displayName : ''
-    });
-});
-
-/* Render home page. */
-router.get('/services', function (req, res, next) {
-    res.render('services', {
-        title: 'Home',
-        displayName: req.user ? req.user.displayName : ''
-    });
-});
-
-/* Render Login page. */
-router.get('/login', function (req, res, next) {
-    if (!req.user) {
-        res.render('login', {
-            title: 'Login',
-            messages: req.flash('loginMessage'),
-            displayName: req.user ? req.user.displayName : ''
-        });
+    // check if the user is logged in
+    if(!req.isAuthenticated()){
+        return res.redirect('/login');
     }
-    else {
-        return res.redirect('/users');
-    }
+    next();
+}
+
+/* Render Users main page. */
+router.get('/', requireAuth, function (req, res, next) {
+    Survey.find(function (err, surveys) {
+        if (err) {
+            console.log(err);
+            res.end(err);
+        }
+        else {
+            res.render('surveys/index', {
+                title: 'Users',
+                surveys: surveys,
+                displayName: req.user ? req.user.displayName : ''
+            });
+        }
+    });
 });
 
-/* Process the Login Request */
-router.post('/login', passport.authenticate('local-login', {
-    successRedirect: '/users',
-    failureRedirect: '/login',
-    failureFlash: true
-}));
-
-/* Show Registration Page */
-router.get('/register', function (req, res, next) {
-    if (!req.user) {
-        res.render('register', {
-            title: 'Register',
-            messages: req.flash('registerMessage'),
-            displayName: req.user ? req.user.displayName : ''
-        });
-    }
-    else {
-        return res.redirect('/');
-    }
+/* Render Users main page. */
+router.get('/live/:id', requireAuth, function (req, res, next) {
+    Survey.find(function (err, surveys) {
+        if (err) {
+            console.log(err);
+            res.end(err);
+        }
+        else {
+            res.render('surveys/live', {
+                title: 'Surveys',
+                surveys: surveys,
+                displayName: req.user ? req.user.displayName : ''
+            });
+        }
+    });
 });
 
-/* POST signup data. */
-router.post('/register', passport.authenticate('local-registration', {
-    //Success go to Profile Page / Fail go to Signup page
-    successRedirect : '/users',
-    failureRedirect : '/register',
-    failureFlash : true
-}));
-
-
-/* Process Logout Request */
-router.get('/logout', function (req, res){
-    req.logout();
-    res.redirect('/');
+/* Render the Add Users Page */
+router.get('/add', requireAuth, function (req, res, next) {
+    res.render('surveys/add', {
+        title: 'Surveys',
+        displayName: req.user ? req.user.displayName : ''
+    });
 });
+
+/* process the submission of a new user */
+router.post('/add', requireAuth, function (req, res, next) {
+    var survey = new Survey(req.body);
+
+    Survey.create({
+        surveyTopic: req.body.surveyTopic,
+        surveyQuestion: req.body.surveyQuestion,
+        surveyOption1: req.body.surveyOption1,
+        surveyOption2: req.body.surveyOption2,
+        surveyOption3: req.body.surveyOption3,
+        surveyOption4: req.body.surveyOption4,
+        provider: 'local',
+        created: Date.now(),
+        updated: Date.now()
+    }, function (err, User) {
+        if (err) {
+            console.log(err);
+            res.end(err);
+        }
+        else {
+            res.redirect('/surveys');
+        }
+    });
+});
+
+/* Render the User Edit Page */
+router.get('/:id', requireAuth, function (req, res, next) {
+    // create an id variable
+    var id = req.params.id;
+    // use mongoose and our model to find the right user
+    Survey.findById(id, function (err, survey) {
+        if (err) {
+            console.log(err);
+            res.end(err);
+        }
+        else {
+            //show the edit view
+            res.render('surveys/edit', {
+                title: 'Surveys',
+                survey: survey,
+                displayName: req.user ? req.user.displayName : ''
+            });
+        }
+    });
+});
+
+/* process the edit form submission */
+router.post('/:id', requireAuth, function (req, res, next) {
+    var id = req.params.id;
+    var contact = new Survey(req.body);
+
+    Survey._id = id;
+    Survey.updated = Date.now();
+
+    // use mongoose to do the update
+    Survey.update({ _id: id }, contact, function (err) {
+        if (err) {
+            console.log(err);
+            res.end(err);
+        }
+        else {
+            res.redirect('/surveys');
+        }
+    });
+});
+
+/* run delete on the selected user */
+router.get('/delete/:id', requireAuth, function (req, res, next) {
+    var id = req.params.id;
+    Survey.remove({ _id: id }, function (err) {
+        if (err) {
+            console.log(err);
+            res.end(err);
+        }
+        else {
+            res.redirect('/surveys');
+        }
+    });
+});
+
 
 module.exports = router;
